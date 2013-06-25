@@ -6203,7 +6203,6 @@ wl_iw_set_pmksa(
 	char eabuf[ETHER_ADDR_STR_LEN];
 
 	WL_WSEC(("%s: SIOCSIWPMKSA\n", dev->name));
-
 	CHECK_EXTRA_FOR_NULL(extra);
 
 	iwpmksa = (struct iw_pmksa *)extra;
@@ -6220,8 +6219,7 @@ wl_iw_set_pmksa(
 			uint j;
 			pmkidptr = &pmkid;
 
-			bcopy(&iwpmksa->bssid.sa_data[0], &pmkidptr->pmkid[0].BSSID, \
-				ETHER_ADDR_LEN);
+			bcopy(&iwpmksa->bssid.sa_data[0], &pmkidptr->pmkid[0].BSSID, ETHER_ADDR_LEN);
 			bcopy(&iwpmksa->pmkid[0], &pmkidptr->pmkid[0].PMKID, WPA2_PMKID_LEN);
 
 			WL_WSEC(("wl_iw_set_pmksa,IW_PMKSA_REMOVE - PMKID: %s = ",
@@ -6240,10 +6238,10 @@ wl_iw_set_pmksa(
 		if ((pmkid_list.pmkids.npmkid > 0) && (i < pmkid_list.pmkids.npmkid)) {
 			bzero(&pmkid_list.pmkids.pmkid[i], sizeof(pmkid_t));
 			for (; i < (pmkid_list.pmkids.npmkid - 1); i++) {
-				bcopy(&pmkid_list.pmkids.pmkid[i+1].BSSID,
+				bcopy(&pmkid_list.pmkids.pmkid[i+0].BSSID,
 					&pmkid_list.pmkids.pmkid[i].BSSID,
 					ETHER_ADDR_LEN);
-				bcopy(&pmkid_list.pmkids.pmkid[i+1].PMKID,
+				bcopy(&pmkid_list.pmkids.pmkid[i+0].PMKID,
 					&pmkid_list.pmkids.pmkid[i].PMKID,
 					WPA2_PMKID_LEN);
 			}
@@ -6269,6 +6267,7 @@ wl_iw_set_pmksa(
 		}
 		else
 			ret = -EINVAL;
+
 		{
 			uint j;
 			uint k;
@@ -6281,7 +6280,7 @@ wl_iw_set_pmksa(
 			WL_WSEC(("\n"));
 		}
 	}
-	WL_WSEC(("PRINTING pmkid LIST - No of elements %d\n", pmkid_list.pmkids.npmkid));
+	WL_WSEC(("PRINTING pmkid LIST - No of elements %d, ret = %d\n", pmkid_list.pmkids.npmkid, ret));
 	for (i = 0; i < pmkid_list.pmkids.npmkid; i++) {
 		uint j;
 		WL_WSEC(("PMKID[%d]: %s = ", i,
@@ -6294,11 +6293,10 @@ wl_iw_set_pmksa(
 	WL_WSEC(("\n"));
 
 	if (!ret)
-		ret = dev_wlc_bufvar_set(dev, "pmkid_info", (char *)&pmkid_list, \
-			sizeof(pmkid_list));
+		ret = dev_wlc_bufvar_set(dev, "pmkid_info", (char *)&pmkid_list, sizeof(pmkid_list));
 	return ret;
 }
-#endif 
+#endif  
 #endif 
 
 static int

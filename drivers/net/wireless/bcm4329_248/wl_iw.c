@@ -6238,10 +6238,10 @@ wl_iw_set_pmksa(
 		if ((pmkid_list.pmkids.npmkid > 0) && (i < pmkid_list.pmkids.npmkid)) {
 			bzero(&pmkid_list.pmkids.pmkid[i], sizeof(pmkid_t));
 			for (; i < (pmkid_list.pmkids.npmkid - 1); i++) {
-				bcopy(&pmkid_list.pmkids.pmkid[i].BSSID,
+				bcopy(&pmkid_list.pmkids.pmkid[i+1].BSSID,
 					&pmkid_list.pmkids.pmkid[i].BSSID,
 					ETHER_ADDR_LEN);
-				bcopy(&pmkid_list.pmkids.pmkid[i].PMKID,
+				bcopy(&pmkid_list.pmkids.pmkid[i+1].PMKID,
 					&pmkid_list.pmkids.pmkid[i].PMKID,
 					WPA2_PMKID_LEN);
 			}
